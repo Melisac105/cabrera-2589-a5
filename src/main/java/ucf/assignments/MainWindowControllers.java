@@ -47,7 +47,7 @@ public class MainWindowControllers implements Initializable {
     ImageView searchButton;
 
     @FXML
-    TextField remainingCapacity;
+    Label remainingCapacity;
 
 
 
@@ -58,6 +58,16 @@ public class MainWindowControllers implements Initializable {
     }
 
     public void removeButtonClicked(MouseEvent mouseEvent) {
+        // getting selected item from the tableview into Item object
+        Item selectedItem = tableView.getSelectionModel().getSelectedItem();
+
+        // removing selected item from the table view
+        tableView.getItems().remove(selectedItem);
+
+        // setting remaining capacity of the todolist
+        myList.removeItem(selectedItem);
+
+        remainingCapacity.setText("Remaining Capacity: " + myList.getRemainingCapacity());
     }
 
     @FXML
@@ -65,9 +75,16 @@ public class MainWindowControllers implements Initializable {
         //open a new window when add button is clicked
         // if the remaining capacity of the todolist is 0 then it will just show a message dialog box to the user with a message
             // otherwise load a new screen using fxml loader that's AddTaskWindow.fxml to add new task
+        if (myList.getRemainingCapacity() <= 0) {
+            new Alert(Alert.AlertType.INFORMATION, "The list is full, delete some item").show();
+        } else {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddItemWindow.fxml"));
             Parent root = null;
-            root = fxmlLoader.load();
+            try {
+                root = fxmlLoader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             Scene scene = new Scene(root);
             Stage stage = new Stage();
@@ -77,6 +94,7 @@ public class MainWindowControllers implements Initializable {
             Stage stagePrevious = (Stage) addButton.getScene().getWindow();
             stagePrevious.close();
             stage.show();
+        }
     }
 
     public void searchButtonClicked(MouseEvent mouseEvent) {

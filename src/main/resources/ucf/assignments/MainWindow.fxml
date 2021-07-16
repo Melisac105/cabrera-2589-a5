@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -51,6 +51,6 @@
             <Image url="@icons/outline_manage_search_black_48pt_3x.png" />
          </image>
       </ImageView>
-      <TextField fx:id="remainingCapacity" layoutY="374.0" style="-fx-background-color: #ffffff00;" text="Remaining Capacity: " />
+      <Label fx:id="remainingCapacity" layoutX="6.0" layoutY="378.0" text="Remaining Capacity: " textFill="#f5f2f2" />
    </children>
 </AnchorPane>

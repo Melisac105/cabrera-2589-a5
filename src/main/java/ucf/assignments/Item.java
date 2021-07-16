@@ -44,7 +44,7 @@ public class Item {
         }
 
         public String toString(){
-            return this.name+","+this.serialNumber +","+this.price;
+            return this.serialNumber+","+this.name +","+this.price;
         }
 
 }

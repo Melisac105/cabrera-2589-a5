@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class InventoryTrackingApp extends Application {
@@ -31,20 +32,20 @@ public class InventoryTrackingApp extends Application {
         }
     }
 
-//    @Override
-//    public void stop(){
-//        //get all tasks from Main Controller class
-//        //write all tasks to file
-//        //as the data and changes should be saved
-//        try{
-//            FileWriter writeFile = new FileWriter("files/data.txt");
-//            for(Item i : MainWindowControllers.getTasks()){
-//                writeFile.write(i.toString()+"\r\n");
-//            }
-//            System.out.println("Data Written");
-//            writeFile.close();
-//        } catch(Exception e) {
-//            System.out.println("Data Exception"+e);
-//        }
-//    }
+    @Override
+    public void stop(){
+        //get all tasks from Main Controller class
+        //write all tasks to file
+        //as the data and changes should be saved
+        try{
+            FileWriter writeFile = new FileWriter("files/data.txt");
+            for(Item i : MainWindowControllers.getTasks()){
+                writeFile.write(i.toString()+"\r\n");
+            }
+            System.out.println("Data Written");
+            writeFile.close();
+        } catch(Exception e) {
+            System.out.println("Data Exception"+e);
+        }
+    }
 }

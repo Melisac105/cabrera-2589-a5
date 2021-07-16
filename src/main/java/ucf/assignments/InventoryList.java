@@ -11,8 +11,7 @@ public class InventoryList {
 
         ArrayList<Item> items;
 
-        public InventoryList (String title, int capacity) {
-
+        public InventoryList (String name, int capacity) {
             //initialize all fields
             this.name = name;
             this.capacity = capacity;
@@ -50,7 +49,7 @@ public class InventoryList {
             count--; //decrease counter by 1
         }
 
-        public void updateName(Item i, String str){
+        public void editName(Item i, String str){
             int index;
             //loop to find task from the list and record the index for passed task
             for(index = 0; index < count; index++){

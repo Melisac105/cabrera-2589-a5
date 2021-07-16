@@ -7,7 +7,7 @@ public class Item {
 
         String name;
 
-        public Item(String name, String serialNumber, String price, String isComplete) {
+        public Item(String serialNumber, String name, String price) {
             this.name = name;
             this.serialNumber = serialNumber;
             this.price = price; // format as shared

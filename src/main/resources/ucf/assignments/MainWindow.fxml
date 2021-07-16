@@ -29,7 +29,7 @@
           </Menu>
         </menus>
       </MenuBar>
-      <TableView layoutX="-6.0" layoutY="28.0" prefHeight="349.0" prefWidth="606.0">
+      <TableView fx:id="tableView" layoutX="-6.0" layoutY="28.0" prefHeight="349.0" prefWidth="606.0">
         <columns>
           <TableColumn fx:id="serialNumber" prefWidth="150.0" text="Serial Number" />
           <TableColumn fx:id="name" minWidth="0.0" prefWidth="310.0" text="Name" />

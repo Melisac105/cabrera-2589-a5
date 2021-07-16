@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucf.assignments.MainWindowControllers">
+   <children>
+      <MenuBar layoutY="1.0" prefHeight="27.0" prefWidth="422.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+                  <MenuItem fx:id="newInventory" mnemonicParsing="false" onAction="#createNewInventory" text="New" />
+                  <MenuItem mnemonicParsing="false" text="Open..." />
+              <MenuItem mnemonicParsing="false" text="Save As..." />
+                  <MenuItem fx:id="quit" mnemonicParsing="false" onAction="#quitButtonClicked" text="Quit" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <TableView layoutX="-6.0" layoutY="28.0" prefHeight="349.0" prefWidth="606.0">
+        <columns>
+          <TableColumn fx:id="serialNumber" prefWidth="150.0" text="Serial Number" />
+          <TableColumn fx:id="name" minWidth="0.0" prefWidth="310.0" text="Name" />
+            <TableColumn fx:id="price" minWidth="0.0" prefWidth="150.0" text="Price" />
+        </columns>
+      </TableView>
+      <ImageView fx:id="removeButton" fitHeight="27.0" fitWidth="20.0" layoutX="553.0" layoutY="379.0" onMouseClicked="#removeButtonClicked" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@icons/delete.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="addButton" fitHeight="20.0" fitWidth="20.0" layoutX="573.0" layoutY="379.0" onMouseClicked="#addButtonClicked" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@icons/outline_add_circle_black_48pt_3x.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="searchButton" fitHeight="27.0" fitWidth="32.0" layoutX="570.0" layoutY="1.0" onMouseClicked="#searchButtonClicked" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@icons/outline_manage_search_black_48pt_3x.png" />
+         </image>
+      </ImageView>
+      <TextField fx:id="remainingCapacity" layoutY="374.0" style="-fx-background-color: #ffffff00;" text="Remaining Capacity: " />
+   </children>
+</AnchorPane>

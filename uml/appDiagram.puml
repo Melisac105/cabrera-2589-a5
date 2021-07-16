@@ -1,0 +1,74 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+class InventoryTrackerApp {
+    start()
+    main()
+}
+
+class SceneManager {
+    scenes: Map<String, Scene>
+
+    load()
+    getScene(String): Scene
+}
+
+class MainWindowControllers {
+    items : ItemModel
+    scenes: SceneManager
+    fileManager: FileManager
+
+    + MainWindowControlles(ItemModel, SceneManager)
+
+    addButtonClicked()
+    editButtonClicked()
+    removeButtonClicked()
+
+    addItem(String, String, BigDecimal)
+    editItem()
+}
+
+class AddItemWindowController {
+}
+
+class EditItemWindowController {
+}
+
+class Remove {
+}
+
+class search {
+    - ObservableList<Item>
+}
+
+class Item {
+    - name: SimpleStringProperty
+    - serialNumber: SimpleStringProperty
+    - value: bigNumber
+
+    + getName()
+    + setName()
+    + nameProperty()
+    + getSerialNumber()
+}
+
+class FileManager {
+    saveInventoryAsCSV(filename: String)
+
+}
+
+javafx.Application <|-- InventoryTrackerApp
+InventoryTrackerApp -- SceneManager
+SceneManager -- MainWindowControllers
+SceneManager -- AddItemWindowControllers
+SceneManager -- EditItemWindowControllers
+SceneManager -- Remove
+SceneManager -- search
+MainWindowControllers o-- ItemModel
+AddItemWindowController o-- ItemModel
+EditItemWindowController o-- ItemModel
+Remove o-- ItemModel
+search o-- ItemModel
+ItemModel *-- Item
+MainWindowControllers o-- FileManager
+@enduml

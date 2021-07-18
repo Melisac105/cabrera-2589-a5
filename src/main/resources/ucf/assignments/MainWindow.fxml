@@ -16,13 +16,12 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-                  <MenuItem fx:id="newInventory" mnemonicParsing="false" onAction="#createNewInventory" text="New" />
                   <MenuItem mnemonicParsing="false" text="Open..." />
               <MenuItem mnemonicParsing="false" text="Save As..." />
-                  <MenuItem fx:id="quit" mnemonicParsing="false" onAction="#quitButtonClicked" text="Quit" />
+                  <MenuItem mnemonicParsing="false" onAction="#quitButtonClicked" text="Quit" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Help">
+          <Menu fx:id="quit" mnemonicParsing="false" onAction="#quitButtonClicked" text="Help">
             <items>
               <MenuItem mnemonicParsing="false" text="About" />
             </items>

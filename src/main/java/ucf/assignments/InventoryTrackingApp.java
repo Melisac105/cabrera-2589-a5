@@ -39,7 +39,7 @@ public class InventoryTrackingApp extends Application {
         //as the data and changes should be saved
         try{
             FileWriter writeFile = new FileWriter("files/data.txt");
-            for(Item i : MainWindowControllers.getTasks()){
+            for(Item i : MainWindowControllers.getItems()){
                 writeFile.write(i.toString()+"\r\n");
             }
             System.out.println("Data Written");

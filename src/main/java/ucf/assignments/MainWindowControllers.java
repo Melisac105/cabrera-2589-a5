@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -23,10 +24,8 @@ import java.util.Scanner;
 
 public class MainWindowControllers implements Initializable {
 
-    private static InventoryList myList;
+    private static InventoryList myInventory;
 
-    @FXML
-    MenuItem newInventory;
     @FXML
     MenuItem quit;
 
@@ -49,12 +48,8 @@ public class MainWindowControllers implements Initializable {
     @FXML
     Label remainingCapacity;
 
-
-
-    public void createNewInventory(ActionEvent actionEvent) {
-    }
-
     public void quitButtonClicked(ActionEvent actionEvent) {
+        System.exit(0);
     }
 
     public void removeButtonClicked(MouseEvent mouseEvent) {
@@ -65,9 +60,9 @@ public class MainWindowControllers implements Initializable {
         tableView.getItems().remove(selectedItem);
 
         // setting remaining capacity of the todolist
-        myList.removeItem(selectedItem);
+        myInventory.removeItem(selectedItem);
 
-        remainingCapacity.setText("Remaining Capacity: " + myList.getRemainingCapacity());
+        remainingCapacity.setText("Remaining Capacity: " + myInventory.getRemainingCapacity());
     }
 
     @FXML
@@ -75,7 +70,7 @@ public class MainWindowControllers implements Initializable {
         //open a new window when add button is clicked
         // if the remaining capacity of the todolist is 0 then it will just show a message dialog box to the user with a message
             // otherwise load a new screen using fxml loader that's AddTaskWindow.fxml to add new task
-        if (myList.getRemainingCapacity() <= 0) {
+        if (myInventory.getRemainingCapacity() <= 0) {
             new Alert(Alert.AlertType.INFORMATION, "The list is full, delete some item").show();
         } else {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddItemWindow.fxml"));
@@ -104,7 +99,7 @@ public class MainWindowControllers implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         // the method will be called on the initialization of MainWindowController's object
 
-        myList = new InventoryList("My List", 100); // initializing todolist
+        myInventory = new InventoryList("My List", 100); // initializing todolist
 
         // getting all the tasks from 'data.txt' file and adding them to todolist one by one
         try {
@@ -113,17 +108,22 @@ public class MainWindowControllers implements Initializable {
             while(fileScanner.hasNext()){
                 String line = fileScanner.nextLine();
                 String[] lineParts = line.split(",");
-                myList.addItem(new Item(lineParts[0],lineParts[1],lineParts[2]));
+                myInventory.addItem(new Item(lineParts[0],lineParts[1],lineParts[2]));
             }
         } catch(Exception e){
             e.printStackTrace();
         }
 
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
-        serialNumber.setCellValueFactory(new PropertyValueFactory<>("serialNumber"));
-        price.setCellValueFactory(new PropertyValueFactory<>("price"));
+        name.setSortType(TableColumn.SortType.ASCENDING);
 
-        tableView.getItems().setAll(myList.getItems());
+        serialNumber.setCellValueFactory(new PropertyValueFactory<>("serialNumber"));
+        serialNumber.setSortType(TableColumn.SortType.ASCENDING);
+
+        price.setCellValueFactory(new PropertyValueFactory<Item, String>("price"));
+        price.setSortType(TableColumn.SortType.ASCENDING);
+
+        tableView.getItems().setAll(myInventory.getItems());
 
         name.setCellFactory(TextFieldTableCell.forTableColumn());
         name.setOnEditCommit(
@@ -137,7 +137,7 @@ public class MainWindowControllers implements Initializable {
                         // getting that item from the table into Item object
                         Item temp = ( t.getTableView().getItems().get(t.getTablePosition().getRow()));
 
-                        myList.editName(temp, t.getNewValue()); // updating that item's new name into todolist
+                        myInventory.editName(temp, t.getNewValue()); // updating that item's new name into todolist
                     }
                 }
         );
@@ -154,7 +154,7 @@ public class MainWindowControllers implements Initializable {
                         // getting that item from the table into Item object
                         Item temp = ( t.getTableView().getItems().get(t.getTablePosition().getRow()));
 
-                        myList.editSerialNumber(temp, t.getNewValue()); // updating that item's new description into todolist
+                        myInventory.editSerialNumber(temp, t.getNewValue()); // updating that item's new description into todolist
                     }
                 }
         );
@@ -171,13 +171,13 @@ public class MainWindowControllers implements Initializable {
                         // getting that item from the table into Item object
                         Item temp = ( t.getTableView().getItems().get(t.getTablePosition().getRow()));
 
-                        myList.editPrice(temp, t.getNewValue()); // updating that item's new dueDate into todolist
+                        myInventory.editPrice(temp, t.getNewValue()); // updating that item's new dueDate into todolist
                     }
                 }
         );
     }
 
-    public static ArrayList<Item> getTasks(){
-        return myList.getItems();
+    public static ArrayList<Item> getItems(){
+        return myInventory.getItems();
     }
 }

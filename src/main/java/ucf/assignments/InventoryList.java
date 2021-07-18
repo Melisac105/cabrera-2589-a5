@@ -1,5 +1,7 @@
 package ucf.assignments;
 
+import javafx.scene.control.Alert;
+
 import java.util.ArrayList;
 
 public class InventoryList {
@@ -35,8 +37,8 @@ public class InventoryList {
             this.capacity = capacity; //setter method for capacity using "this."
         }
 
-        public void editName(String newTitle){
-            this.name = newTitle; //edit title using "this.title"
+        public void editName(String newName){
+            this.name = newName; //edit title using "this.title"
         }
 
         public void addItem(Item i){
@@ -84,7 +86,6 @@ public class InventoryList {
             }
             getItems().get(index).setPrice(str); //update the passed string as new due date
         }
-
 
         //this is a getter method for getting items inside a todolist
         public ArrayList<Item> getItems(){

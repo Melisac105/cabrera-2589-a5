@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -17,13 +19,8 @@
           <Menu mnemonicParsing="false" text="File">
             <items>
                   <MenuItem mnemonicParsing="false" text="Open..." />
-              <MenuItem mnemonicParsing="false" text="Save As..." />
+              <MenuItem mnemonicParsing="false" onAction="#saveButtonClicked" text="Save As..." />
                   <MenuItem mnemonicParsing="false" onAction="#quitButtonClicked" text="Quit" />
-            </items>
-          </Menu>
-          <Menu fx:id="quit" mnemonicParsing="false" onAction="#quitButtonClicked" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
             </items>
           </Menu>
         </menus>
@@ -45,11 +42,11 @@
             <Image url="@icons/outline_add_circle_black_48pt_3x.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="searchButton" fitHeight="27.0" fitWidth="32.0" layoutX="593.0" layoutY="1.0" onMouseClicked="#searchButtonClicked" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@icons/outline_manage_search_black_48pt_3x.png" />
-         </image>
-      </ImageView>
       <Label fx:id="remainingCapacity" layoutX="6.0" layoutY="378.0" text="Remaining Capacity: " textFill="#f5f2f2" />
+      <TextField fx:id="searchField" layoutX="419.0" prefHeight="27.0" prefWidth="201.0" promptText="Search Box" style="-fx-background-color: #ffffe4#ffffe4;">
+         <padding>
+            <Insets right="28.0" />
+         </padding>
+      </TextField>
    </children>
 </AnchorPane>

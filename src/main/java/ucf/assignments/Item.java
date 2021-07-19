@@ -23,12 +23,12 @@ public class Item {
             this.serialNumber = serialNumber;
         }
 
-        //getter method for due date
+        //getter method for price
         public String getPrice() {
             return price;
         }
 
-        //setter method for due date using "this."
+        //setter method for price using "this."
         public void setPrice(String price) {
             this.price = price;
         }

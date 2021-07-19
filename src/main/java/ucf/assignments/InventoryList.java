@@ -11,7 +11,7 @@ public class InventoryList {
 
         public int count;
 
-        ArrayList<Item> items;
+        public static ArrayList<Item> items;
 
         public InventoryList (String name, int capacity) {
             //initialize all fields
@@ -87,8 +87,9 @@ public class InventoryList {
             getItems().get(index).setPrice(str); //update the passed string as new due date
         }
 
+
         //this is a getter method for getting items inside a todolist
-        public ArrayList<Item> getItems(){
+        public static ArrayList<Item> getItems(){
             return items;
         }
 

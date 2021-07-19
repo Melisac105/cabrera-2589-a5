@@ -1,5 +1,7 @@
 package ucf.assignments;
 
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -11,16 +13,14 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
-import java.util.Scanner;
+import java.util.*;
 
 public class MainWindowControllers implements Initializable {
 
@@ -42,17 +42,20 @@ public class MainWindowControllers implements Initializable {
     ImageView removeButton;
     @FXML
     ImageView addButton;
-    @FXML
-    ImageView searchButton;
 
     @FXML
     Label remainingCapacity;
 
-    public void quitButtonClicked(ActionEvent actionEvent) {
+    @FXML
+    TextField searchField;
+
+    @FXML
+    public void quitButtonClicked() {
         System.exit(0);
     }
 
-    public void removeButtonClicked(MouseEvent mouseEvent) {
+    @FXML
+    public void removeButtonClicked() {
         // getting selected item from the tableview into Item object
         Item selectedItem = tableView.getSelectionModel().getSelectedItem();
 
@@ -66,10 +69,10 @@ public class MainWindowControllers implements Initializable {
     }
 
     @FXML
-    public void addButtonClicked(MouseEvent mouseEvent) throws IOException {
+    public void addButtonClicked() throws IOException {
         //open a new window when add button is clicked
         // if the remaining capacity of the todolist is 0 then it will just show a message dialog box to the user with a message
-            // otherwise load a new screen using fxml loader that's AddTaskWindow.fxml to add new task
+        // otherwise load a new screen using fxml loader that's AddTaskWindow.fxml to add new task
         if (myInventory.getRemainingCapacity() <= 0) {
             new Alert(Alert.AlertType.INFORMATION, "The list is full, delete some item").show();
         } else {
@@ -77,7 +80,7 @@ public class MainWindowControllers implements Initializable {
             Parent root = null;
             try {
                 root = fxmlLoader.load();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -92,8 +95,37 @@ public class MainWindowControllers implements Initializable {
         }
     }
 
-    public void searchButtonClicked(MouseEvent mouseEvent) {
+    @FXML
+    public void saveButtonClicked(ActionEvent actionEvent) {
+        // create object of DirectoryChooser
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+
+        Scanner directoryName = new Scanner(System.in);
+        // set the title
+//        directoryChooser.setTitle("Choose a folder to save file");
+        directoryChooser.setTitle(directoryName.next());
+
+        // call showDialog method of directoryChooser to show it on screen
+        // File object will get selected directory from directoryChooser dialog
+        File file = directoryChooser.showDialog(null);
+        System.out.println(file);
+
+        // file writer will write all the todotasks to the 'todolistdownloaded.txt' file in the selected directory
+        //show a message dialog box when all the tasks will have been saved into the file
+        try{
+            FileWriter writeFile = new FileWriter(file.toString()+"\\ListDownloaded.txt");
+            for(Item i : myInventory.getItems()){
+                writeFile.write(i.toString()+"\t\n");
+            }
+            writeFile.flush();
+            writeFile.close();
+            new Alert(Alert.AlertType.INFORMATION, "This list has been saved in your folder").show();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
     }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -108,7 +140,7 @@ public class MainWindowControllers implements Initializable {
             while(fileScanner.hasNext()){
                 String line = fileScanner.nextLine();
                 String[] lineParts = line.split(",");
-                myInventory.addItem(new Item(lineParts[0],lineParts[1],lineParts[2]));
+                myInventory.addItem(new Item(lineParts[0],lineParts[1], lineParts[2]));
             }
         } catch(Exception e){
             e.printStackTrace();
@@ -120,10 +152,12 @@ public class MainWindowControllers implements Initializable {
         serialNumber.setCellValueFactory(new PropertyValueFactory<>("serialNumber"));
         serialNumber.setSortType(TableColumn.SortType.ASCENDING);
 
-        price.setCellValueFactory(new PropertyValueFactory<Item, String>("price"));
+        price.setCellValueFactory(new PropertyValueFactory<>("price"));
         price.setSortType(TableColumn.SortType.ASCENDING);
 
-        tableView.getItems().setAll(myInventory.getItems());
+        tableView.getItems().setAll(InventoryList.getItems());
+
+        remainingCapacity.setText("Remaining Capacity: " + myInventory.getRemainingCapacity());
 
         name.setCellFactory(TextFieldTableCell.forTableColumn());
         name.setOnEditCommit(
@@ -148,6 +182,13 @@ public class MainWindowControllers implements Initializable {
                     // this method will be called when user try to edit any cell in the description column
                     @Override
                     public void handle(TableColumn.CellEditEvent<Item, String> t) {
+
+                        for (int i = 0; i < InventoryList.getItems().size(); i++) {
+                            if (InventoryList.getItems().get(i).getSerialNumber().equals(t.getTableView().getItems().get(i).getSerialNumber())) {
+                                new Alert(Alert.AlertType.INFORMATION, "This serial number already exists").show();
+                                return;
+                            }
+                        }
                         // setting new description to the selected cell in the description column
                         ( t.getTableView().getItems().get(t.getTablePosition().getRow())).setSerialNumber(t.getNewValue());
 
@@ -175,9 +216,43 @@ public class MainWindowControllers implements Initializable {
                     }
                 }
         );
+
+        //observable list in a filtered list with all items
+        FilteredList<Item> filteredData = new FilteredList(tableView.getItems(), b -> true);
+
+        //set filter predicate when filterData changes
+        searchField.textProperty().addListener((observable, oldData, newData) -> {
+            filteredData.setPredicate(item -> {
+
+                //if searchBox is empty, show all items
+                if(newData == null || newData.isEmpty()) {
+                    return true;
+                }
+
+                String toLowerCase = newData.toLowerCase();
+
+                if(item.getName().toLowerCase().contains(toLowerCase)) {
+                    return true; //filter matches name
+                } else if(item.getSerialNumber().toLowerCase().contains(toLowerCase)) {
+                    return true; //filter matches serialNumber
+                } else {
+                    return false; //not match
+                }
+            });
+            SortedList<Item> sortData = new SortedList<>(filteredData); //filterList in a sortList
+
+            //bind sortList comparator to tableView comparator
+            sortData.comparatorProperty().bind(tableView.comparatorProperty());
+
+            tableView.setItems(sortData); //add sorted/filtered data to the table
+        });
+
+
     }
 
     public static ArrayList<Item> getItems(){
         return myInventory.getItems();
     }
+
+
 }

@@ -7,12 +7,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
-
 import java.io.FileWriter;
 import java.io.IOException;
 
 
 public class AddItemWindowController {
+
+    static final char[] LETTERS = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+    static final char[] SPECIAL_CHARACTERS = "!@#%^&*()_+".toCharArray();
 
     public Button submit;
 
@@ -23,35 +25,58 @@ public class AddItemWindowController {
 
 
     @FXML
-    public void submitButtonClicked() {
+    public void submitButtonClicked() throws InterruptedException {
         String name = itemName.getText(); // get Task Name
         String serialNumber = serialNum.getText(); // get description
         String price = itemPrice.getText(); // get description
+
 
         //if statement to check if description has more than 256 characters
         if(name.length() > 256) {
             new Alert(Alert.AlertType.INFORMATION, "The name should have between 2 and 256 characters").show();
             return;
-        }
-
-        if(name.length() == 0) {
-            new Alert(Alert.AlertType.INFORMATION, "Please enter name");
+        } else if(name.length() < 2) {
+            new Alert(Alert.AlertType.INFORMATION, "The name should have between 2 and 256 characters").show();
+            return;
+        } else if(name.isBlank()) {
+            new Alert(Alert.AlertType.INFORMATION, "Please enter name").show();
             return;
         }
 
         if(serialNumber.length() == 0) {
-            new Alert(Alert.AlertType.INFORMATION, "Please enter serial number");
+            new Alert(Alert.AlertType.INFORMATION, "Please enter serial number").show();
             return;
         }
 
         if(price.length() == 0) {
             new Alert(Alert.AlertType.INFORMATION,"Please enter price").show();
             return;
+        } else if(price.length() < 5) {
+            new Alert(Alert.AlertType.INFORMATION, "The price must have the format $X.XX").show();
+            return;
         }
 
-        if(price.length() < 4) {
-            new Alert(Alert.AlertType.INFORMATION, "The price must have the formar X.XX").show();
-            return;
+        for(char c : LETTERS) {
+            String letter = c + "";
+            if(price.toLowerCase().contains(letter)) {
+                new Alert(Alert.AlertType.INFORMATION, "The price must contain only numbers").show();
+                return;
+            }
+        }
+
+        for(char c : SPECIAL_CHARACTERS) {
+            String letter = c + "";
+            if(price.toLowerCase().contains(letter)) {
+                new Alert(Alert.AlertType.INFORMATION, "The price must contain only numbers").show();
+                return;
+            }
+        }
+
+        for (int i = 0; i < InventoryList.getItems().size(); i++) {
+            if (InventoryList.getItems().get(i).getSerialNumber().equals(serialNumber)) {
+                new Alert(Alert.AlertType.INFORMATION, "This serial number already exists").show();
+                return;
+            }
         }
 
         // creating object for new Item
@@ -87,8 +112,5 @@ public class AddItemWindowController {
         Stage stagePrevious = (Stage) submit.getScene().getWindow();
         stagePrevious.close();
         stage.show();
-
     }
-
-
 }

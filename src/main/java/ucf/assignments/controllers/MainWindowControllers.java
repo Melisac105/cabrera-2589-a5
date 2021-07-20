@@ -1,4 +1,4 @@
-package ucf.assignments;
+package ucf.assignments.controllers;
 
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
@@ -14,9 +14,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import ucf.assignments.util.InventoryList;
+import ucf.assignments.util.Item;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
@@ -96,14 +100,13 @@ public class MainWindowControllers implements Initializable {
     }
 
     @FXML
-    public void saveButtonClicked(ActionEvent actionEvent) {
+    public void saveAsTSV(ActionEvent actionEvent) throws IOException {
+
         // create object of DirectoryChooser
         DirectoryChooser directoryChooser = new DirectoryChooser();
 
-        Scanner directoryName = new Scanner(System.in);
         // set the title
-//        directoryChooser.setTitle("Choose a folder to save file");
-        directoryChooser.setTitle(directoryName.next());
+        directoryChooser.setTitle("Choose a folder to save file");
 
         // call showDialog method of directoryChooser to show it on screen
         // File object will get selected directory from directoryChooser dialog
@@ -112,18 +115,91 @@ public class MainWindowControllers implements Initializable {
 
         // file writer will write all the todotasks to the 'todolistdownloaded.txt' file in the selected directory
         //show a message dialog box when all the tasks will have been saved into the file
-        try{
-            FileWriter writeFile = new FileWriter(file.toString()+"\\ListDownloaded.txt");
-            for(Item i : myInventory.getItems()){
-                writeFile.write(i.toString()+"\t\n");
+        try {
+            FileWriter writeFile = new FileWriter(file.toString() + "\\list.txt");
+            for (Item i : myInventory.getItems()) {
+                writeFile.write(i.toTSV() + "\r\n");
             }
             writeFile.flush();
             writeFile.close();
             new Alert(Alert.AlertType.INFORMATION, "This list has been saved in your folder").show();
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
+    @FXML
+    public void saveAsHTML() {
+        // create object of DirectoryChooser
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+
+        // set the title
+        directoryChooser.setTitle("Choose a folder to save file");
+
+        // call showDialog method of directoryChooser to show it on screen
+        // File object will get selected directory from directoryChooser dialog
+        File file = directoryChooser.showDialog(null);
+        System.out.println(file);
+
+//        FileTypes.createFolder();
+
+        // file writer will write all the todotasks to the 'todolistdownloaded.txt' file in the selected directory
+        //show a message dialog box when all the tasks will have been saved into the file
+        try {
+            FileWriter writeFile = new FileWriter(file.toString() + "\\list.html");
+            for (Item i : myInventory.getItems()) {
+                writeFile.write(i.toTSV() + "\r\n");
+            }
+            writeFile.flush();
+            writeFile.close();
+            new Alert(Alert.AlertType.INFORMATION, "This list has been saved in your folder").show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void saveAsJSON() {
+
+    }
+
+    @FXML
+    public void openInventory() {
+        FileChooser fileChooser = new FileChooser();
+
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("TSV", ".txt"),
+                new FileChooser.ExtensionFilter("HTML", ".html"),
+                new FileChooser.ExtensionFilter("JSON", ".json"));
+
+        // set title for file chooser dialog
+        fileChooser.setTitle("Open Resource File");
+
+        // show file chooser dialog on screen to select a file and assigning selected file to the File object
+        File selectedFile = fileChooser.showOpenDialog(null);
+
+        // if user has selected any file then it will clear existing todolist first and then add all the tasks from the file into that todolist one by one using a loop
+        // finally it will show all the items in the tableview and update the Remaining capacity of the todolist
+        // else show a message dialog box with a message.
+        if (selectedFile != null) {
+//            myInventory.clearAll();
+            Scanner fileScanner = null;
+            try {
+                fileScanner = new Scanner(selectedFile);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            while (fileScanner.hasNext()) {
+                String line = fileScanner.nextLine();
+                String[] lineParts = line.split(",");
+
+                myInventory.addItem(new Item(lineParts[0], lineParts[1], lineParts[2]));
+            }
+            tableView.getItems().setAll(myInventory.getItems());
+            remainingCapacity.setText("Remaining Capacity: " + myInventory.getRemainingCapacity());
+        } else {
+            new Alert(Alert.AlertType.INFORMATION, "Invalid File OR File not chosen").show();
+        }
     }
 
 
@@ -137,12 +213,12 @@ public class MainWindowControllers implements Initializable {
         try {
             File inputFile = new File("files/data.txt");
             Scanner fileScanner = new Scanner(inputFile);
-            while(fileScanner.hasNext()){
+            while (fileScanner.hasNext()) {
                 String line = fileScanner.nextLine();
                 String[] lineParts = line.split(",");
-                myInventory.addItem(new Item(lineParts[0],lineParts[1], lineParts[2]));
+                myInventory.addItem(new Item(lineParts[0], lineParts[1], lineParts[2]));
             }
-        } catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -166,10 +242,10 @@ public class MainWindowControllers implements Initializable {
                     @Override
                     public void handle(TableColumn.CellEditEvent<Item, String> t) {
                         // setting new name to the selected cell in the taskName column
-                        ( t.getTableView().getItems().get(t.getTablePosition().getRow())).setName(t.getNewValue());
+                        (t.getTableView().getItems().get(t.getTablePosition().getRow())).setName(t.getNewValue());
 
                         // getting that item from the table into Item object
-                        Item temp = ( t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                        Item temp = (t.getTableView().getItems().get(t.getTablePosition().getRow()));
 
                         myInventory.editName(temp, t.getNewValue()); // updating that item's new name into todolist
                     }
@@ -190,10 +266,10 @@ public class MainWindowControllers implements Initializable {
                             }
                         }
                         // setting new description to the selected cell in the description column
-                        ( t.getTableView().getItems().get(t.getTablePosition().getRow())).setSerialNumber(t.getNewValue());
+                        (t.getTableView().getItems().get(t.getTablePosition().getRow())).setSerialNumber(t.getNewValue());
 
                         // getting that item from the table into Item object
-                        Item temp = ( t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                        Item temp = (t.getTableView().getItems().get(t.getTablePosition().getRow()));
 
                         myInventory.editSerialNumber(temp, t.getNewValue()); // updating that item's new description into todolist
                     }
@@ -207,10 +283,10 @@ public class MainWindowControllers implements Initializable {
                     @Override
                     public void handle(TableColumn.CellEditEvent<Item, String> t) {
                         // setting new dueDate to the selected cell in the description column
-                        ( t.getTableView().getItems().get(t.getTablePosition().getRow())).setPrice(t.getNewValue());
+                        (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPrice(t.getNewValue());
 
                         // getting that item from the table into Item object
-                        Item temp = ( t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                        Item temp = (t.getTableView().getItems().get(t.getTablePosition().getRow()));
 
                         myInventory.editPrice(temp, t.getNewValue()); // updating that item's new dueDate into todolist
                     }
@@ -225,15 +301,15 @@ public class MainWindowControllers implements Initializable {
             filteredData.setPredicate(item -> {
 
                 //if searchBox is empty, show all items
-                if(newData == null || newData.isEmpty()) {
+                if (newData == null || newData.isEmpty()) {
                     return true;
                 }
 
                 String toLowerCase = newData.toLowerCase();
 
-                if(item.getName().toLowerCase().contains(toLowerCase)) {
+                if (item.getName().toLowerCase().contains(toLowerCase)) {
                     return true; //filter matches name
-                } else if(item.getSerialNumber().toLowerCase().contains(toLowerCase)) {
+                } else if (item.getSerialNumber().toLowerCase().contains(toLowerCase)) {
                     return true; //filter matches serialNumber
                 } else {
                     return false; //not match
@@ -250,7 +326,7 @@ public class MainWindowControllers implements Initializable {
 
     }
 
-    public static ArrayList<Item> getItems(){
+    public static ArrayList<Item> getItems() {
         return myInventory.getItems();
     }
 

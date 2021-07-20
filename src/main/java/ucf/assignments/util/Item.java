@@ -1,11 +1,10 @@
-package ucf.assignments;
+package ucf.assignments.util;
 
 public class Item {
 
         private String serialNumber;
         private String price;
-
-        String name;
+        private String name;
 
         public Item(String serialNumber, String name, String price) {
             this.name = name;
@@ -44,7 +43,11 @@ public class Item {
         }
 
         public String toString(){
-            return this.serialNumber+","+this.name +","+this.price;
+            return this.serialNumber+","+this.name+","+this.price;
+        }
+
+        public String toTSV() {
+            return this.serialNumber+"\t"+this.name+"\t"+this.price;
         }
 
 }

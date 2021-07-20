@@ -247,7 +247,7 @@ public class MainWindowControllers implements Initializable {
                         // getting that item from the table into Item object
                         Item temp = (t.getTableView().getItems().get(t.getTablePosition().getRow()));
 
-                        myInventory.editName(temp, t.getNewValue()); // updating that item's new name into todolist
+                        myInventory.updateName(temp, t.getNewValue()); // updating that item's new name into todolist
                     }
                 }
         );

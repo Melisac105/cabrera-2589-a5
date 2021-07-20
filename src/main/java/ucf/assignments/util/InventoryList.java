@@ -35,7 +35,7 @@ public class InventoryList {
         this.capacity = capacity; //setter method for capacity using "this."
     }
 
-    public void editName(String newName) {
+    public void updateName(String newName) {
         this.name = newName; //edit title using "this.title"
     }
 
@@ -49,7 +49,7 @@ public class InventoryList {
         count--; //decrease counter by 1
     }
 
-    public void editName(Item i, String str) {
+    public void updateName(Item i, String str) {
         int index;
         //loop to find task from the list and record the index for passed task
         for (index = 0; index < count; index++) {

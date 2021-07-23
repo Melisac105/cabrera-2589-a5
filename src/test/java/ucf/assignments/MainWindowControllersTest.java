@@ -32,7 +32,7 @@ class MainWindowControllersTest {
         loadItems();
         Item temp = new Item("GGT54GH","car","$89.99");
         myInventory.removeItem(temp);
-        assertEquals(97, myInventory.getRemainingCapacity());
+        assertEquals(97, myInventory.getCapacity());
 
     }
 

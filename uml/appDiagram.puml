@@ -80,6 +80,11 @@ class InventoryList {
     + getItems()
 }
 
+class Html {
+    + generateHeaderHtml()
+    + generateBodyHtml()
+}
+
 
 javafx.Application <|-- InventoryTrackerApp
 InventoryTrackerApp -- MainWindowControllers
@@ -87,5 +92,6 @@ MainWindowControllers -- AddItemWindowController
 MainWindowControllers - Item
 AddItemWindowController - Item
 Item -- InventoryList
+Html - MainWindowControllers
 
 @enduml

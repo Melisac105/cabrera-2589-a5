@@ -46,7 +46,7 @@ public class MainWindowControllers implements Initializable {
     ImageView addButton;
 
     @FXML
-    Label remainingCapacity;
+    Label capacity;
 
     @FXML
     TextField searchField;
@@ -67,7 +67,7 @@ public class MainWindowControllers implements Initializable {
         // setting remaining capacity of the todolist
         myInventory.removeItem(selectedItem);
 
-        remainingCapacity.setText("Remaining Capacity: " + myInventory.getRemainingCapacity());
+        capacity.setText("Capacity: " + myInventory.getCapacity());
     }
 
     @FXML
@@ -75,7 +75,7 @@ public class MainWindowControllers implements Initializable {
         //open a new window when add button is clicked
         // if the remaining capacity of the todolist is 0 then it will just show a message dialog box to the user with a message
         // otherwise load a new screen using fxml loader that's AddTaskWindow.fxml to add new task
-        if (myInventory.getRemainingCapacity() <= 0) {
+        if (myInventory.getCapacity() <= 0) {
             new Alert(Alert.AlertType.INFORMATION, "The list is full, delete some item").show();
         } else {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ucf/assignments/AddItemWindow.fxml"));
@@ -110,7 +110,7 @@ public class MainWindowControllers implements Initializable {
         //show a message dialog box when all the tasks will have been saved into the file
         try {
             FileWriter writeFile = new FileWriter(file.toString() + "\\list1.txt");
-            writeFile.write("Serial Number\t" + "Name\t" + "Price\t\n");
+            writeFile.write("Serial Number\t" + "Name\t\t" + "Price\t\n");
             for (Item i : InventoryList.getItems()) {
                 writeFile.write( i.toTSV() + "\r\n");
             }
@@ -229,7 +229,7 @@ public class MainWindowControllers implements Initializable {
                 myInventory.addItem(new Item(lineParts[0], lineParts[1], lineParts[2]));
             }
             tableView.getItems().setAll(InventoryList.getItems());
-            remainingCapacity.setText("Remaining Capacity: " + myInventory.getRemainingCapacity());
+            capacity.setText("Capacity: " + myInventory.getCapacity());
         } else {
             new Alert(Alert.AlertType.INFORMATION, "Invalid File OR File not chosen").show();
         }
@@ -241,7 +241,7 @@ public class MainWindowControllers implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         // the method will be called on the initialization of MainWindowController's object
 
-        myInventory = new InventoryList("My List", 100); // initializing todolist
+        myInventory = new InventoryList("My List", 0); // initializing todolist
 
         // getting all the tasks from 'data.txt' file and adding them to todolist one by one
         try {
@@ -267,7 +267,7 @@ public class MainWindowControllers implements Initializable {
 
         tableView.getItems().setAll(InventoryList.getItems());
 
-        remainingCapacity.setText("Remaining Capacity: " + myInventory.getRemainingCapacity());
+        capacity.setText("Capacity: " + myInventory.getCapacity());
 
         name.setCellFactory(TextFieldTableCell.forTableColumn());
         name.setOnEditCommit(

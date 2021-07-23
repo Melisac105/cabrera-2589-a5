@@ -27,8 +27,8 @@ public class InventoryList {
         this.name = name; //set new title of the todolist using "this."
     }
 
-    public int getRemainingCapacity() {
-        return capacity - count; //return the remaining capacity of the todolist
+    public int getCapacity() {
+        return capacity + count; //return the remaining capacity of the todolist
     }
 
     public void setCapacity(int capacity) {

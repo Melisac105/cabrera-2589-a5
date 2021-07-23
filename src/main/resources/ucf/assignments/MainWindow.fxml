@@ -48,7 +48,7 @@
             <Image url="@icons/outline_add_circle_black_48pt_3x.png" />
          </image>
       </ImageView>
-      <Label fx:id="remainingCapacity" layoutX="6.0" layoutY="378.0" text="Remaining Capacity: " textFill="#f5f2f2" />
+      <Label fx:id="capacity" layoutX="6.0" layoutY="378.0" text="Capacity: " textFill="#f5f2f2" />
       <TextField fx:id="searchField" layoutX="419.0" prefHeight="27.0" prefWidth="201.0" promptText="Search Box" style="-fx-background-color: #ffffe4#ffffe4;">
          <padding>
             <Insets right="28.0" />

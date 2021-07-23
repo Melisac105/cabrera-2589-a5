@@ -47,7 +47,7 @@ public class Item {
         }
 
         public String toTSV() {
-            return this.serialNumber+"\t\t"+this.name+"\t"+this.price;
+            return this.serialNumber+"\t\t"+this.name+"\t\t"+this.price;
         }
 
 }

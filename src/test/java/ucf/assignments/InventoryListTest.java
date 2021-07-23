@@ -39,14 +39,14 @@ class InventoryListTest {
     @Test
     void getRemainingCapacity() throws FileNotFoundException {
         loadItems();
-        assertEquals(96, myInventory.getRemainingCapacity());
+        assertEquals(96, myInventory.getCapacity());
     }
 
     @Test
     void setCapacity() throws FileNotFoundException {
         loadItems();
         myInventory.setCapacity(150);
-        assertEquals(146, myInventory.getRemainingCapacity());
+        assertEquals(146, myInventory.getCapacity());
     }
 
     @Test
@@ -73,11 +73,11 @@ class InventoryListTest {
         Item temp = new Item("JYGB65TB", "mouse", "$20.99");
         myInventory.addItem(temp);
 
-        int capacityBeforeDelete = myInventory.getRemainingCapacity();
+        int capacityBeforeDelete = myInventory.getCapacity();
 
         myInventory.removeItem(temp);
 
-        int capacityAfterDelete = myInventory.getRemainingCapacity();
+        int capacityAfterDelete = myInventory.getCapacity();
         assertEquals(capacityBeforeDelete,capacityAfterDelete-1);
     }
 

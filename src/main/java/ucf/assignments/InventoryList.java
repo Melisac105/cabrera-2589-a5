@@ -1,4 +1,4 @@
-package ucf.assignments.util;
+package ucf.assignments;
 
 import java.util.ArrayList;
 

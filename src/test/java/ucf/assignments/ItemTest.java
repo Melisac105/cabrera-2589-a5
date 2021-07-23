@@ -1,4 +1,4 @@
-package ucf.assignments.util;
+package ucf.assignments;
 
 import org.junit.jupiter.api.Test;
 
@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ItemTest {
 
-    Item item = new Item("HFT54YH76","lamp","$9.99");
+    Item item = new Item("HFT54YH76","lamp","" + "$9.99");
 
     @Test
     void getSerialNumber() {
@@ -48,6 +48,6 @@ class ItemTest {
 
     @Test
     void toTSV() {
-        assertEquals("HFT54YH76\tlamp\t$9.99", item.toTSV());
+        assertEquals("HFT54YH76\t\tlamp\t$9.99", item.toTSV());
     }
 }

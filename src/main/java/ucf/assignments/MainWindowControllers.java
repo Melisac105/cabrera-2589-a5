@@ -1,8 +1,9 @@
-package ucf.assignments.controllers;
+package ucf.assignments;
+
+import javafx.stage.FileChooser;
 
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,15 +15,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import ucf.assignments.util.InventoryList;
-import ucf.assignments.util.Item;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import java.io.*;
 import java.net.URL;
 import java.util.*;
 
@@ -80,13 +78,9 @@ public class MainWindowControllers implements Initializable {
         if (myInventory.getRemainingCapacity() <= 0) {
             new Alert(Alert.AlertType.INFORMATION, "The list is full, delete some item").show();
         } else {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddItemWindow.fxml"));
-            Parent root = null;
-            try {
-                root = fxmlLoader.load();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ucf/assignments/AddItemWindow.fxml"));
+            Parent root;
+            root = fxmlLoader.load();
 
             Scene scene = new Scene(root);
             Stage stage = new Stage();
@@ -100,8 +94,7 @@ public class MainWindowControllers implements Initializable {
     }
 
     @FXML
-    public void saveAsTSV(ActionEvent actionEvent) throws IOException {
-
+    public void saveAsTSV()  {
         // create object of DirectoryChooser
         DirectoryChooser directoryChooser = new DirectoryChooser();
 
@@ -113,12 +106,13 @@ public class MainWindowControllers implements Initializable {
         File file = directoryChooser.showDialog(null);
         System.out.println(file);
 
-        // file writer will write all the todotasks to the 'todolistdownloaded.txt' file in the selected directory
+        // file writer will write all the todotasks to the 'list.txt' file in the selected directory
         //show a message dialog box when all the tasks will have been saved into the file
         try {
-            FileWriter writeFile = new FileWriter(file.toString() + "\\list.txt");
+            FileWriter writeFile = new FileWriter(file.toString() + "\\list1.txt");
+            writeFile.write("Serial Number\t" + "Name\t" + "Price\t\n");
             for (Item i : myInventory.getItems()) {
-                writeFile.write(i.toTSV() + "\r\n");
+                writeFile.write( i.toTSV() + "\r\n");
             }
             writeFile.flush();
             writeFile.close();
@@ -141,25 +135,62 @@ public class MainWindowControllers implements Initializable {
         File file = directoryChooser.showDialog(null);
         System.out.println(file);
 
-//        FileTypes.createFolder();
-
-        // file writer will write all the todotasks to the 'todolistdownloaded.txt' file in the selected directory
-        //show a message dialog box when all the tasks will have been saved into the file
         try {
-            FileWriter writeFile = new FileWriter(file.toString() + "\\list.html");
-            for (Item i : myInventory.getItems()) {
-                writeFile.write(i.toTSV() + "\r\n");
+            File f = new File(file.toString() + "\\source.html");
+            if(!f.exists()) {
+                f.createNewFile();
             }
-            writeFile.flush();
-            writeFile.close();
+            BufferedWriter bw = null;
+            bw = new BufferedWriter(new FileWriter(f));
+            String htmlHeaderFileContent = Html.generateHeaderHtml();
+            bw.write(htmlHeaderFileContent);
+            for (Item i : myInventory.getItems()) {
+                String htmlBodyFileContent = Html.generateBodyHtml(i.getSerialNumber(), i.getName(), i.getPrice());
+                bw.write(htmlBodyFileContent);
+            }
+            bw.close();
             new Alert(Alert.AlertType.INFORMATION, "This list has been saved in your folder").show();
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     @FXML
     public void saveAsJSON() {
+        JSONArray jsonArray = new JSONArray();
+
+        //add inventory data to JSONObject
+        for (Item i : myInventory.getItems()) {
+
+            JSONObject productObject = new JSONObject();
+            JSONObject productDetails = new JSONObject();
+            productDetails.put("serial", i.getSerialNumber());
+            productDetails.put("name", i.getName());
+            productDetails.put("price", i.getPrice());
+            productObject.put("product", productDetails);
+            jsonArray.add(productObject);
+        }
+        // create object of DirectoryChooser
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+
+        // set the title
+        directoryChooser.setTitle("Choose a folder to save file");
+
+        // call showDialog method of directoryChooser to show it on screen
+        // File object will get selected directory from directoryChooser dialog
+        File f = directoryChooser.showDialog(null);
+        System.out.println(f);
+
+        // file writer will write all the todotasks to the 'todolistdownloaded.json' file in the selected directory
+        //show a message dialog box when all the tasks will have been saved into the file
+        try {
+            FileWriter file = new FileWriter(f.toString() + "\\products1.json");
+            file.write(jsonArray.toJSONString());
+            file.flush();
+            new Alert(Alert.AlertType.INFORMATION, "This list has been saved in your folder").show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -168,9 +199,9 @@ public class MainWindowControllers implements Initializable {
         FileChooser fileChooser = new FileChooser();
 
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("TSV", ".txt"),
-                new FileChooser.ExtensionFilter("HTML", ".html"),
-                new FileChooser.ExtensionFilter("JSON", ".json"));
+                new FileChooser.ExtensionFilter("TSV", "*.txt"),
+                new FileChooser.ExtensionFilter("HTML", "*.html"),
+                new FileChooser.ExtensionFilter("JSON", "*.json"));
 
         // set title for file chooser dialog
         fileChooser.setTitle("Open Resource File");
@@ -178,11 +209,13 @@ public class MainWindowControllers implements Initializable {
         // show file chooser dialog on screen to select a file and assigning selected file to the File object
         File selectedFile = fileChooser.showOpenDialog(null);
 
-        // if user has selected any file then it will clear existing todolist first and then add all the tasks from the file into that todolist one by one using a loop
+        System.out.println(selectedFile.getName());
+        // if user has selected any file then it will clear existing todolist first and then add all the tasks
+        // from the file into that todolist one by one using a loop
         // finally it will show all the items in the tableview and update the Remaining capacity of the todolist
         // else show a message dialog box with a message.
         if (selectedFile != null) {
-//            myInventory.clearAll();
+            // myInventory.clearAll();
             Scanner fileScanner = null;
             try {
                 fileScanner = new Scanner(selectedFile);
@@ -200,6 +233,7 @@ public class MainWindowControllers implements Initializable {
         } else {
             new Alert(Alert.AlertType.INFORMATION, "Invalid File OR File not chosen").show();
         }
+
     }
 
 

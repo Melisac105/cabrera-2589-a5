@@ -1,7 +1,4 @@
-65GFTVJ5,book,$9.99
-656GUYB,camera,$59.99
-HGY8776,mouse,$25.99
-12GHTU,lamp,$9.99
-GGG65,notebook,$7.55
-frfrfrfrf,xbdcr,$7.99
-GGG654,sqqssq,$5.99
+HYG65HY,candle,$24.99
+GTYG76,book,$10.99
+GTYG761,camera,$70.99
+HYUG76,glasses,$1.99

@@ -1,4 +1,4 @@
-package ucf.assignments.util;
+package ucf.assignments;
 
 import org.junit.jupiter.api.Test;
 

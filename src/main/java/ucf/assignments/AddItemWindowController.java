@@ -1,4 +1,4 @@
-package ucf.assignments.controllers;
+package ucf.assignments;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -6,8 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import ucf.assignments.util.InventoryList;
-import ucf.assignments.util.Item;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -31,7 +29,6 @@ public class AddItemWindowController {
         String serialNumber = serialNum.getText(); // get description
         String price = itemPrice.getText(); // get description
 
-
         //if statement to check if description has more than 256 characters
         if (name.length() > 256) {
             new Alert(Alert.AlertType.INFORMATION, "The name should have between 2 and 256 characters").show();
@@ -39,7 +36,7 @@ public class AddItemWindowController {
         } else if (name.length() < 2) {
             new Alert(Alert.AlertType.INFORMATION, "The name should have between 2 and 256 characters").show();
             return;
-        } else if (name.isBlank()) {
+        } else if (name.length() == 0) {
             new Alert(Alert.AlertType.INFORMATION, "Please enter name").show();
             return;
         }
@@ -98,7 +95,7 @@ public class AddItemWindowController {
         }
 
         // loading new window using fxml loader that's MainWindow
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MainWindow.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ucf/assignments/MainWindow.fxml"));
         Parent root = null;
         try {
             root = fxmlLoader.load();

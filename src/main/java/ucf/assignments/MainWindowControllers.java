@@ -26,7 +26,7 @@ import java.util.*;
 
 public class MainWindowControllers implements Initializable {
 
-    private static InventoryList myInventory;
+    private InventoryList myInventory;
 
     @FXML
     MenuItem quit;
@@ -111,7 +111,7 @@ public class MainWindowControllers implements Initializable {
         try {
             FileWriter writeFile = new FileWriter(file.toString() + "\\list1.txt");
             writeFile.write("Serial Number\t" + "Name\t" + "Price\t\n");
-            for (Item i : myInventory.getItems()) {
+            for (Item i : InventoryList.getItems()) {
                 writeFile.write( i.toTSV() + "\r\n");
             }
             writeFile.flush();
@@ -144,7 +144,7 @@ public class MainWindowControllers implements Initializable {
             bw = new BufferedWriter(new FileWriter(f));
             String htmlHeaderFileContent = Html.generateHeaderHtml();
             bw.write(htmlHeaderFileContent);
-            for (Item i : myInventory.getItems()) {
+            for (Item i : InventoryList.getItems()) {
                 String htmlBodyFileContent = Html.generateBodyHtml(i.getSerialNumber(), i.getName(), i.getPrice());
                 bw.write(htmlBodyFileContent);
             }
@@ -160,7 +160,7 @@ public class MainWindowControllers implements Initializable {
         JSONArray jsonArray = new JSONArray();
 
         //add inventory data to JSONObject
-        for (Item i : myInventory.getItems()) {
+        for (Item i : InventoryList.getItems()) {
 
             JSONObject productObject = new JSONObject();
             JSONObject productDetails = new JSONObject();
@@ -228,7 +228,7 @@ public class MainWindowControllers implements Initializable {
 
                 myInventory.addItem(new Item(lineParts[0], lineParts[1], lineParts[2]));
             }
-            tableView.getItems().setAll(myInventory.getItems());
+            tableView.getItems().setAll(InventoryList.getItems());
             remainingCapacity.setText("Remaining Capacity: " + myInventory.getRemainingCapacity());
         } else {
             new Alert(Alert.AlertType.INFORMATION, "Invalid File OR File not chosen").show();
@@ -281,7 +281,7 @@ public class MainWindowControllers implements Initializable {
                         // getting that item from the table into Item object
                         Item temp = (t.getTableView().getItems().get(t.getTablePosition().getRow()));
 
-                        myInventory.updateName(temp, t.getNewValue()); // updating that item's new name into todolist
+                        myInventory.editName(temp, t.getNewValue()); // updating that item's new name into todolist
                     }
                 }
         );
@@ -361,8 +361,6 @@ public class MainWindowControllers implements Initializable {
     }
 
     public static ArrayList<Item> getItems() {
-        return myInventory.getItems();
+        return InventoryList.getItems();
     }
-
-
 }

@@ -13,14 +13,20 @@ import java.io.IOException;
 
 public class AddItemWindowController {
 
-    static final char[] LETTERS = "abcdefghijklmnopqrstuvwxyz".toCharArray();
-    static final char[] SPECIAL_CHARACTERS = "!@#%^&*()_+".toCharArray();
+    final char[] LETTERS = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+    final char[] SPECIAL_CHARACTERS = "!@#%^&*()_+".toCharArray();
 
-    public Button submit;
+    @FXML
+    Button submit;
 
-    public TextField itemName;
-    public TextField serialNum;
-    public TextField itemPrice;
+    @FXML
+    TextField itemName;
+
+    @FXML
+    TextField serialNum;
+
+    @FXML
+    TextField itemPrice;
 
 
     @FXML
@@ -35,9 +41,6 @@ public class AddItemWindowController {
             return;
         } else if (name.length() < 2) {
             new Alert(Alert.AlertType.INFORMATION, "The name should have between 2 and 256 characters").show();
-            return;
-        } else if (name.length() == 0) {
-            new Alert(Alert.AlertType.INFORMATION, "Please enter name").show();
             return;
         }
 

@@ -1,8 +1,6 @@
 package ucf.assignments;
 
 import org.junit.jupiter.api.Test;
-import ucf.assignments.InventoryList;
-import ucf.assignments.Item;
 
 import java.io.File;
 import java.io.FileNotFoundException;

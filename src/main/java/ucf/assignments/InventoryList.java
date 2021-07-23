@@ -49,7 +49,7 @@ public class InventoryList {
         count--; //decrease counter by 1
     }
 
-    public void updateName(Item i, String str) {
+    public void editName(Item i, String str) {
         int index;
         //loop to find task from the list and record the index for passed task
         for (index = 0; index < count; index++) {

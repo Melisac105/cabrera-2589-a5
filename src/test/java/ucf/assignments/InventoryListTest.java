@@ -50,7 +50,7 @@ class InventoryListTest {
     }
 
     @Test
-    void editName() throws FileNotFoundException {
+    void updateName() throws FileNotFoundException {
         loadItems();
         myInventory.updateName("new name");
         assertEquals("new name", myInventory.getName());
@@ -63,7 +63,7 @@ class InventoryListTest {
         Item temp = new Item("JYGB65TB", "mouse", "$20.99");
         myInventory.addItem(temp);
 
-        assertEquals(temp, myInventory.getItems().get(myInventory.count-1));
+        assertEquals(temp, InventoryList.getItems().get(myInventory.count-1));
     }
 
     @Test
@@ -82,34 +82,34 @@ class InventoryListTest {
     }
 
     @Test
-    void updateName() throws FileNotFoundException {
+    void editName() throws FileNotFoundException {
         loadItems();
-        Item temp = myInventory.getItems().get(0);
-        myInventory.updateName(temp,"test");
-        assertEquals("test", myInventory.getItems().get(0).getName());
+        Item temp = InventoryList.getItems().get(0);
+        myInventory.editName(temp,"test");
+        assertEquals("test", InventoryList.getItems().get(0).getName());
     }
 
     @Test
     void editSerialNumber() throws FileNotFoundException {
         loadItems();
-        Item temp = myInventory.getItems().get(0);
+        Item temp = InventoryList.getItems().get(0);
         myInventory.editSerialNumber(temp, "TG76JNN");
-        assertEquals("TG76JNN", myInventory.getItems().get(0).getSerialNumber());
+        assertEquals("TG76JNN", InventoryList.getItems().get(0).getSerialNumber());
     }
 
     @Test
     void editPrice() throws FileNotFoundException {
         loadItems();
-        Item temp = myInventory.getItems().get(0);
+        Item temp = InventoryList.getItems().get(0);
         myInventory.editPrice(temp, "$5.99");
-        assertEquals("$5.99", myInventory.getItems().get(0).getPrice());
+        assertEquals("$5.99", InventoryList.getItems().get(0).getPrice());
 
     }
 
     @Test
     void getItems() throws FileNotFoundException {
         loadItems();
-        ArrayList<Item> items = myInventory.getItems();
+        ArrayList<Item> items = InventoryList.getItems();
         assertEquals(4, items.size());
     }
 }

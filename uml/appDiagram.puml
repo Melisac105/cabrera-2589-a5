@@ -4,71 +4,88 @@
 class InventoryTrackerApp {
     start()
     main()
-}
-
-class SceneManager {
-    scenes: Map<String, Scene>
-
-    load()
-    getScene(String): Scene
+    stop()
 }
 
 class MainWindowControllers {
-    items : ItemModel
-    scenes: SceneManager
-    fileManager: FileManager
+    - myInventory: InventoryList
 
-    + MainWindowControlles(ItemModel, SceneManager)
+    tableView: TableView<Item>
+    serialNumber: TableColumn<Item, String>
+    name: TableColumn<Item, String>
+    price: TableColumn<Item, String>
 
-    addButtonClicked()
-    editButtonClicked()
-    removeButtonClicked()
+    removeButton: ImageView
+    addButton: ImageView
 
-    addItem(String, String, BigDecimal)
-    editItem()
+    remainingCapacity: Label
+    searchField: TextField
+
+    + quitButtonClicked()
+    + removeButtonClicked()
+    + addButtonClicked()
+    + saveAsTSV()
+    + saveAsHTML()
+    + saveAsJSON()
+    + openInventory()
+    + initialize()
+    + getItems()
 }
 
 class AddItemWindowController {
-}
+    LETTERS: char[]
+    SPECIAL_CHARACTERS: char[]
 
-class EditItemWindowController {
-}
+    submit: Button
+    itemName: TextField
+    serialNum: TextField
+    itemPrice: TextField
 
-class Remove {
-}
-
-class search {
-    - ObservableList<Item>
+    + submitButtonClicked()
 }
 
 class Item {
-    - name: SimpleStringProperty
-    - serialNumber: SimpleStringProperty
-    - value: bigNumber
+        - serialNumber: String
+        - price: String
+        - name: String
 
+        + Item()
+        + getSerialNumber()
+        + setSerialNumber()
+        + getPrice()()
+        + setPrice()
+        + getName()
+        + setName()()
+        + toString()
+        + toTSV()
+}
+
+class InventoryList {
+    - name: String
+    - capacity: int
+    + count: int
+    + items: ArrayList<Item>
+
+    + InventoryList()
     + getName()
     + setName()
-    + nameProperty()
-    + getSerialNumber()
+    + getRemainingCapacity()
+    + setCapacity()
+    + updateName()
+    + addItem()
+    + removeItem()
+    + editName()
+    + editSerialNumber()
+    + editPrice()
+    + getItems()
 }
 
-class FileManager {
-    saveInventoryAsCSV(filename: String)
-
-}
 
 javafx.Application <|-- InventoryTrackerApp
-InventoryTrackerApp -- SceneManager
-SceneManager -- MainWindowControllers
-SceneManager -- AddItemWindowControllers
-SceneManager -- EditItemWindowControllers
-SceneManager -- Remove
-SceneManager -- search
-MainWindowControllers o-- ItemModel
-AddItemWindowController o-- ItemModel
-EditItemWindowController o-- ItemModel
-Remove o-- ItemModel
-search o-- ItemModel
-ItemModel *-- Item
-MainWindowControllers o-- FileManager
+InventoryTrackerApp -- MainWindowControllers
+MainWindowControllers -- AddItemWindowController
+MainWindowControllers - Item
+AddItemWindowController - Item
+Item -- InventoryList
+
 @enduml

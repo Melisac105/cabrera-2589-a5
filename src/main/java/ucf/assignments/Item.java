@@ -1,3 +1,8 @@
+/*
+ *  UCF COP3330 Summer 2021 Assignment 5 Solution
+ *  Copyright 2021 Melissa Cabrera
+ */
+
 package ucf.assignments;
 
 public class Item {
@@ -42,12 +47,13 @@ public class Item {
             this.name = name;
         }
 
+        //concatenate using coma
         public String toString(){
             return this.serialNumber+","+this.name+","+this.price;
         }
 
+        //concatenate using tabs
         public String toTSV() {
-            return this.serialNumber+"\t\t"+this.name+"\t\t"+this.price;
+            return this.serialNumber+"\t\t"+ this.name+"\t\t"+this.price;
         }
-
 }

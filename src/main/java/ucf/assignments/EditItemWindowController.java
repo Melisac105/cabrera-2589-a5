@@ -16,20 +16,26 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 
-public class AddItemWindowController {
+public class EditItemWindowController {
 
     static final char[] LETTERS = "abcdefghijklmnopqrstuvwxyz".toCharArray();
     static final char[] SPECIAL_CHARACTERS = "!@#%^&*()_+".toCharArray();
 
-    public Button submit;
+    @FXML
+    TextField itemName;
+    @FXML
+    TextField serialNum;
+    @FXML
+    TextField itemPrice;
 
-    public TextField itemName;
-    public TextField serialNum;
-    public TextField itemPrice;
+    @FXML
+    Button saveChanges;
+    @FXML
+    Button back;
 
 
     @FXML
-    public void submitButtonClicked()  {
+    public void saveChangesClicked()  {
         String name = itemName.getText(); // get Task Name
         String serialNumber = serialNum.getText(); // get description
         String price = itemPrice.getText(); // get description
@@ -52,7 +58,7 @@ public class AddItemWindowController {
             return;
         }
 
-        if (price.length() == 1) {
+        if (price.length() == 0) {
             new Alert(Alert.AlertType.INFORMATION, "Please enter price").show();
             return;
         } else if (price.length() < 5) {
@@ -97,7 +103,6 @@ public class AddItemWindowController {
             }
             writeFile.flush();
             writeFile.close();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -114,8 +119,28 @@ public class AddItemWindowController {
         Scene scene = new Scene(root);
         Stage stage = new Stage();
         stage.setScene(scene);
+        Stage stagePrevious = (Stage) saveChanges.getScene().getWindow();
+        stagePrevious.close();
+        stage.show();
+        new Alert(Alert.AlertType.INFORMATION, "This item has been modify!").show();
+    }
 
-        Stage stagePrevious = (Stage) submit.getScene().getWindow();
+    @FXML
+    public void backButtonClicked(){
+        //load and open MainWindow when back button clicked
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MainWindow.fxml"));
+        Parent root = null;
+        try {
+            root = fxmlLoader.load();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Scene scene = new Scene(root);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setResizable(false);
+        Stage stagePrevious = (Stage) back.getScene().getWindow();
         stagePrevious.close();
         stage.show();
     }

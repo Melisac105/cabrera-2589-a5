@@ -1,3 +1,8 @@
+/*
+ *  UCF COP3330 Summer 2021 Assignment 5 Solution
+ *  Copyright 2021 Melissa Cabrera
+ */
+
 package ucf.assignments;
 
 public class Html {
@@ -14,7 +19,7 @@ public class Html {
                             }
                             th, td {
                                 width: 250px;
-                                text-align : center;
+                                text-align: center;
                                 border: 1px solid black;
                             }
                         </style>
@@ -23,9 +28,9 @@ public class Html {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Serial Number<//th>
-                                    <th>Name<//th>
-                                    <th>Price<//th>
+                                    <th>Serial Number</th>
+                                    <th>Name</th>
+                                    <th>Price</th>
                                 </tr>
                             </thead>
                         </table>
@@ -35,6 +40,7 @@ public class Html {
     }
 
     public static String generateBodyHtml(String serialNum, String name, String price) {
+        //html body format
         return """
                 <!DOCTYPE html>
                 <html>

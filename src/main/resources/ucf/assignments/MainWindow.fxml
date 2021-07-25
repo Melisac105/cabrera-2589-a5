@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -26,16 +27,26 @@
                         <MenuItem mnemonicParsing="false" onAction="#saveAsJSON" text="JSON" />
                     </items>
                   </Menu>
-                  <MenuItem mnemonicParsing="false" onAction="#quitButtonClicked" text="Quit" />
             </items>
           </Menu>
         </menus>
       </MenuBar>
-      <TableView fx:id="tableView" editable="true" layoutY="26.0" prefHeight="349.0" prefWidth="620.0">
+      <TableView fx:id="tableView" layoutY="26.0" prefHeight="349.0" prefWidth="620.0">
         <columns>
           <TableColumn id="serialNumber" fx:id="serialNumber" prefWidth="160.0" text="Serial Number" />
           <TableColumn id="name" fx:id="name" minWidth="0.0" prefWidth="300.0" text="Name" />
-            <TableColumn id="price" fx:id="price" minWidth="0.0" prefWidth="160.0" text="Price" />
+            <TableColumn id="price" fx:id="price" minWidth="0.0" prefWidth="160.0" text="Price">
+               <graphic>
+                  <Button mnemonicParsing="false" onAction="#sortLowToHigh" prefHeight="16.0" prefWidth="20.0" style="-fx-background-color: #ffffff00;">
+                     <graphic>
+                        <ImageView fitHeight="13.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@icons/outline_filter_alt_black_48pt_3x.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </graphic></TableColumn>
         </columns>
       </TableView>
       <ImageView fx:id="removeButton" fitHeight="27.0" fitWidth="20.0" layoutX="580.0" layoutY="376.0" onMouseClicked="#removeButtonClicked" pickOnBounds="true" preserveRatio="true">
@@ -54,5 +65,10 @@
             <Insets right="28.0" />
          </padding>
       </TextField>
+      <ImageView fx:id="editButton" fitHeight="27.0" fitWidth="25.0" layoutX="555.0" layoutY="374.0" onMouseClicked="#editButtonClicked" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@icons/edit.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

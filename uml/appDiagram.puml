@@ -9,6 +9,7 @@ class InventoryTrackerApp {
 
 class MainWindowControllers {
     - myInventory: InventoryList
+    - itemEdited: Item
 
     tableView: TableView<Item>
     serialNumber: TableColumn<Item, String>
@@ -21,9 +22,10 @@ class MainWindowControllers {
     remainingCapacity: Label
     searchField: TextField
 
-    + quitButtonClicked()
     + removeButtonClicked()
     + addButtonClicked()
+    + editButtonClicked()
+    + sortLowToHigh()
     + saveAsTSV()
     + saveAsHTML()
     + saveAsJSON()
@@ -42,6 +44,19 @@ class AddItemWindowController {
     itemPrice: TextField
 
     + submitButtonClicked()
+}
+
+class EditItemWindowController {
+    LETTERS: char[]
+    SPECIAL_CHARACTERS: char[]
+
+    submit: Button
+    itemName: TextField
+    serialNum: TextField
+    itemPrice: TextField
+
+    + saveChangesClicked()
+    + backButtonClicked()
 }
 
 class Item {
@@ -77,6 +92,7 @@ class InventoryList {
     + editName()
     + editSerialNumber()
     + editPrice()
+    + contains()
     + getItems()
 }
 
@@ -85,11 +101,17 @@ class Html {
     + generateBodyHtml()
 }
 
+class DataLoading {
+    +loadData
+}
+
 
 javafx.Application <|-- InventoryTrackerApp
 InventoryTrackerApp -- MainWindowControllers
 MainWindowControllers -- AddItemWindowController
+MainWindowControllers -- EditItemWindowController
 MainWindowControllers - Item
+MainWindowControllers - DataLoading
 AddItemWindowController - Item
 Item -- InventoryList
 Html - MainWindowControllers

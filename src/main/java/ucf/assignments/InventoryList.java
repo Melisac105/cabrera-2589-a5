@@ -1,3 +1,8 @@
+/*
+ *  UCF COP3330 Summer 2021 Assignment 5 Solution
+ *  Copyright 2021 Melissa Cabrera
+ */
+
 package ucf.assignments;
 
 import java.util.ArrayList;
@@ -85,6 +90,18 @@ public class InventoryList {
         getItems().get(index).setPrice(str); //update the passed string as new due date
     }
 
+    public boolean contains(String i){
+        int index;
+
+        //loop to find duplicate of serial number
+        for (index = 0; index < count; index++) {
+            //if find duplicate, then break
+            if (i.equals(getItems().get(index).getSerialNumber())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     //this is a getter method for getting items inside a todolist
     public static ArrayList<Item> getItems() {

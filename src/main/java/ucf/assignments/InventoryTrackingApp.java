@@ -1,3 +1,8 @@
+/*
+ *  UCF COP3330 Summer 2021 Assignment 5 Solution
+ *  Copyright 2021 Melissa Cabrera
+ */
+
 package ucf.assignments;
 
 import javafx.application.Application;
@@ -39,10 +44,11 @@ public class InventoryTrackingApp extends Application {
         //as the data and changes should be saved
         try{
             FileWriter writeFile = new FileWriter("files/data.txt");
+            writeFile.write("Serial Number\tName\t\tPrice\r\n");
             for(Item i : MainWindowControllers.getItems()){
-                writeFile.write(i.toString()+"\r\n");
+                writeFile.write(i.toTSV()+"\r\n");
             }
-            System.out.println("Data Written");
+            writeFile.flush();
             writeFile.close();
         } catch(Exception e) {
             System.out.println("Data Exception"+e);

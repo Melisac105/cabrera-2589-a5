@@ -50,6 +50,6 @@ class ItemTest {
 
     @Test
     void toTSV() {
-        assertEquals("HFT54YH76\t\tlamp\t$9.99", item.toTSV());
+        assertEquals("HFT54YH76\t\tlamp\t\t$9.99", item.toTSV());
     }
 }

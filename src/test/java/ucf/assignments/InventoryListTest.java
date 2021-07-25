@@ -11,14 +11,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class InventoryListTest {
 
-    InventoryList myInventory = new InventoryList("My Inventory",100);
+    InventoryList myInventory = new InventoryList("My Inventory",0);
 
     private void loadItems() throws FileNotFoundException {
         File inputFile = new File("files/testdata.txt");
         Scanner fileScanner = new Scanner(inputFile);
         while(fileScanner.hasNext()){
             String line = fileScanner.nextLine();
-            String[] lineParts = line.split(",");
+            String[] lineParts = line.split("\\s+");
             myInventory.addItem(new Item(lineParts[0],lineParts[1],lineParts[2]));
         }
     }
@@ -37,16 +37,16 @@ class InventoryListTest {
     }
 
     @Test
-    void getRemainingCapacity() throws FileNotFoundException {
+    void getCapacity() throws FileNotFoundException {
         loadItems();
-        assertEquals(96, myInventory.getCapacity());
+        assertEquals(8, myInventory.getCapacity());
     }
 
     @Test
     void setCapacity() throws FileNotFoundException {
         loadItems();
-        myInventory.setCapacity(150);
-        assertEquals(146, myInventory.getCapacity());
+        myInventory.setCapacity(10);
+        assertEquals(18, myInventory.getCapacity());
     }
 
     @Test
@@ -70,7 +70,7 @@ class InventoryListTest {
     void removeItem() throws FileNotFoundException {
         loadItems();
 
-        Item temp = new Item("JYGB65TB", "mouse", "$20.99");
+        Item temp = new Item("HYG65HY", "candle", "$24.99");
         myInventory.addItem(temp);
 
         int capacityBeforeDelete = myInventory.getCapacity();
@@ -78,7 +78,7 @@ class InventoryListTest {
         myInventory.removeItem(temp);
 
         int capacityAfterDelete = myInventory.getCapacity();
-        assertEquals(capacityBeforeDelete,capacityAfterDelete-1);
+        assertEquals(capacityBeforeDelete,capacityAfterDelete+1);
     }
 
     @Test
@@ -110,6 +110,7 @@ class InventoryListTest {
     void getItems() throws FileNotFoundException {
         loadItems();
         ArrayList<Item> items = InventoryList.getItems();
-        assertEquals(4, items.size());
+        assertEquals(8, items.size());
     }
+
 }

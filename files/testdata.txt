@@ -1,4 +1,8 @@
-GGT54GH,car,$89.99
-123GRCIU,lamp,$9.99
-JYH765,mouse,$20.99
-YY56KHH56,book,$15.99
+Serial Number	Name		Price
+HYG65HY		candle		$24.99
+GTYG76		book		$10.99
+GTYG761		camera		$70.99
+HYUG76		glasses		$1.99
+GTU87		plant		$8.99
+KJN76		lamp		$15.99
+JHUGH		cable		$12.99

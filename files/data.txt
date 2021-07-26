@@ -1,7 +1,6 @@
 Serial Number	Name		Price
-ABCD1234		lamp		$1.99
 GFT888Y		camera		$60.99
 879JUB		candle		$24.99
 124GGB		plant		$8.99
-TTV434		book		$10.99
-HBY790I		phone		$300.00
+TTV435		book		$10.99
+ABCD1234		lamp		$1.94
